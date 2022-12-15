@@ -1,0 +1,67 @@
+# importer les modules de Pygame
+import pygame
+from pygame.locals import *
+
+# initialiser Pygame
+pygame.init()
+
+# définir les dimensions de la fenêtre
+width = 400
+height = 400
+
+# créer la fenêtre
+window = pygame.display.set_mode((width, height))
+
+# définir les couleurs
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
+
+# définir les tailles des cases et des chiffres
+CELL_SIZE = 100
+FONT_SIZE = CELL_SIZE // 2
+
+# définir les polices de caractères
+FONT = pygame.font.Font(None, FONT_SIZE)
+
+# définir les valeurs des cases
+grid = [
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+]
+
+# fonction pour dessiner une case
+def draw_cell(x, y, value):
+    # calculer les coordonnées de la case
+    x_pos = x * CELL_SIZE
+    y_pos = y * CELL_SIZE
+
+    # dessiner un carré noir pour la case
+    rect = pygame.Rect(x_pos, y_pos, CELL_SIZE, CELL_SIZE)
+    pygame.draw.rect(window, BLACK, rect)
+
+    # si la case a une valeur
+    if value > 0:
+        # dessiner le chiffre dans la case
+        text = FONT.render(str(value), True, WHITE)
+        text_rect = text.get_rect()
+        text_rect.center = (x_pos + CELL_SIZE // 2, y_pos + CELL_SIZE // 2)
+        window.blit(text, text_rect)
+
+# boucle principale du jeu
+while True:
+    # traiter les événements
+    for event in pygame.event.get():
+        # si l'utilisateur clique sur la croix pour fermer la fenêtre
+        if event.type == pygame.QUIT:
+            # quitter le jeu
+            pygame.quit()
+            sys.exit()
+
+    # mettre à jour l'affichage
+    window.fill(WHITE)
+    for x in range(4):
+        for y in range(4):
+            draw_cell(x, y, grid[x][y])
+    pygame.display.flip()
